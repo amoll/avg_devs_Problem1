@@ -8,8 +8,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'booking', component: BookSeatComponent },
-  { path: 'dashboard', component: DashboardComponent }
+  { path: 'booking/:id', component: BookSeatComponent },
+  { path: 'dashboard/:id', component: DashboardComponent }
  
 ];
 

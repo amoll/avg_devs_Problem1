@@ -44,26 +44,43 @@ export class LoginComponent implements OnInit {
   //get f() { return this.loginForm.controls; }
 
   onSubmit() {
-     // this.submitted = true;
+    
+    //  console.log(this.userName +" "+ this.pwd)
+    //   this.authenticationService.login(this.userName, this.pwd)
+    //       .subscribe(
+    //           data => {
+    //             if(data.role=="Viewer")
+    //             {
+    //                 this.router.navigate(['/booking', { id: data.empId }]);
+    //             }
+    //             else{
+    //                 this.router.navigate(['/dashboard',{ id: data.empId }]);
+    //             }
+                 
+    //           },
+    //           error => {
+    //               //this.alertService.error(error);
+    //              // this.loading = false;
+    //           });
 
-      // reset alerts on submit
-      //this.alertService.clear();
-
-      // stop here if form is invalid
-      // if (this.loginForm.invalid) {
-      //     return;
-      // }
-
-     // this.loading = true;
-     console.log(this.userName +" "+ this.pwd)
-      this.authenticationService.login(this.userName, this.pwd)
-          .subscribe(
-              data => {
-                  this.router.navigate([this.returnUrl]);
-              },
-              error => {
-                  //this.alertService.error(error);
-                 // this.loading = false;
-              });
+              this.authenticationService.getLogin().subscribe(
+                data => {
+                    debugger;
+                    console.log(data)
+                //   if(data.role=="Viewer")
+                //   {
+                //       this.router.navigate(['/booking', { id: data.empId }]);
+                //   }
+                //   else{
+                //       this.router.navigate(['/dashboard',{ id: data.empId }]);
+                //   }
+                   
+                },
+                error => {
+                    //this.alertService.error(error);
+                   // this.loading = false;
+                });
   }
+
+  
 }

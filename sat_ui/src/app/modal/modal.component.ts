@@ -10,7 +10,8 @@ import {FormGroup, FormControl} from '@angular/forms';
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent implements OnInit {
-
+  toDate:Date=new Date();
+  fromDate:Date=new Date();
   constructor() { }
   @Input() item :any= null; // decorate the property with @Input()
   ngOnInit(): void {

@@ -5,28 +5,12 @@
     <div class="rcorners1">
         <div class="row">
             <div class="col-1 seat-border" *ngFor="let seat of seatList">
-                <!-- <div data-bs-toggle="tooltip" data-bs-placement="top" title="{{seat.desc}}" data-bs-toggle="modal"
-                    data-bs-target="#staticBackdrop" type="button">
-                    <img *ngIf="seat.status" src="/assets/seat_icon_a_32.png" alt="image">
-                    <img *ngIf="!seat.status" src="/assets/seat_icon_d_32.png" alt="image">
-                    <div style="font-weight:bold; color: gray;">{{seat.id}}</div>
-                </div> -->
+
                 <app-modal [item]="seat"></app-modal>
             </div>
-            <!-- <div class="col-1"></div>
-        <div class="col-1"></div>
-        <div class="col-1">
-        <span >Window</span></div>
-        <div class="col-1">.col-1</div>
-        <div class="col-1">.col-1</div>
-        <div class="col-1">.col-1</div>
-        <div class="col-1"><img src="/assets/seat_icon_d_32.png" alt="image"></div>
-        <div class="col-1">.col-1</div>
-        <div class="col-1">.col-1</div>
-        <div class="col-1">.col-1</div>
-        <div class="col-1">.col-1</div> -->
+
         </div>
 
     </div>
-    
+
 </div>
