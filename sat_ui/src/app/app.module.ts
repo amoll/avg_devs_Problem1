@@ -8,6 +8,9 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { BookSeatComponent } from './book-seat/book-seat.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { FooterComponent } from './footer/footer.component';
+import { MainComponent } from './main/main.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +18,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AppComponent,
     LoginComponent,
     BookSeatComponent,
-    DashboardComponent
+    DashboardComponent,
+    NavbarComponent,
+    FooterComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,
