@@ -1,3 +1,3 @@
 # avg_devs_Problem1
 
-Creating spcae and desk allocation program.
+Creating space and desk allocation program.
