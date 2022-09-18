@@ -31,13 +31,6 @@ namespace EmployeeService.Api.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/<EmployeeController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         [HttpGet("{id}/Team/Count")]
         public async Task<TeamCountResponse> GetTeamCount(int id)
         {
@@ -57,24 +50,6 @@ namespace EmployeeService.Api.Controllers
         {
             var topLevelEmployees = await _employeeRepository.GetTopLevelEmployee();
             return topLevelEmployees;
-        }
-
-        // POST api/<EmployeeController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<EmployeeController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<EmployeeController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
