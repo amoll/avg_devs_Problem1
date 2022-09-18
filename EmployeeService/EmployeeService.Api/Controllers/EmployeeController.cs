@@ -1,4 +1,5 @@
-﻿using Employee.Repositories;
+﻿using Employee.Models;
+using Employee.Repositories;
 using EmployeeService.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata.Ecma335;
@@ -42,6 +43,13 @@ namespace EmployeeService.Api.Controllers
         {
             var teamCount = await _employeeRepository.GetTeamCount(id);
             return new TeamCountResponse { TeamCount = teamCount, MaxAllowedSeatAllocation = teamCount * MAX_ALLOCATIONS_PERCENTAGE / 100 };
+        }
+
+        [HttpGet("{id}/Team")]
+        public async Task<Team> GetTeam(int id)
+        {
+            var team = await _employeeRepository.GetTeam(id);
+            return team;
         }
 
         // POST api/<EmployeeController>

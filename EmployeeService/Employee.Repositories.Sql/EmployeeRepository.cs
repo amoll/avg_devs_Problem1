@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Employee.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -59,6 +60,76 @@ namespace Employee.Repositories.Sql
             //           where empN1.Id == employeeId
             //           select empN3).CountAsync();
             //return myTeamCount;
+        }
+
+        public async Task<Team> GetTeam(int employeeId)
+        {
+            if (employeeId == 0) return null;
+
+            //var team = await _context.Employees.Where(e => e.ManagerId == employeeId)
+            //                .SelectMany(empN2 => _context.Employees.Where(empN3 => empN3.ManagerId == empN2.Id).DefaultIfEmpty())
+            //                .CountAsync();
+            var teamCount = 0;
+            var manager = await _context.Employees.FirstOrDefaultAsync(e => e.Id.Equals(employeeId));
+            if (manager == null) return null;
+
+            //var oeCodes = await _context.OECodes.ToListAsync();
+            //var managerOECode = oeCodes.First(oe => oe.Id == manager.OECodeId);
+            var employeeTeam = new Team
+            {
+                EmployeeId = manager.Id,
+                EmployeeName = manager.LastName + ", " + manager.FirstName,
+                DepartmentId = manager.DepartmentId,
+                OECodeId = manager.OECodeId,
+                ManagerId = manager.ManagerId
+            };
+            var team = new List<int>() { 1 };
+            var managerIds = new List<int>() { manager.Id };
+            while (team.Any())
+            {
+                var tempTeam = await _context.Employees.Where(e => managerIds.Contains(e.ManagerId.Value))
+                                .Select(e1 => new Team
+                                {
+                                    EmployeeId = e1.Id,
+                                    EmployeeName = e1.LastName + ", " + e1.FirstName,
+                                    DepartmentId = e1.DepartmentId,
+                                    OECodeId = e1.OECodeId,
+                                    ManagerId = e1.ManagerId
+                                }).ToListAsync();
+                foreach (var managerId in managerIds)
+                {
+                    var emp = GetTeam(employeeTeam, managerId);
+                    if(emp == null) continue;
+                    emp.EmployeeTeam = tempTeam;
+                }
+                managerIds = tempTeam.Select(t => t.EmployeeId).Distinct().ToList();
+                team = tempTeam.Select(e => e.EmployeeId).ToList();
+                teamCount += tempTeam.Count;
+            }
+
+            return employeeTeam;
+            //var team = await _context.Employees.Include(e => e.Manager)
+            //                .Where(e => e.ManagerId == employeeId)
+            //                .SelectMany(e => e)
+
+            //var myTeamCount = await (from empN1 in _context.Employees
+            //           join empN2 in _context.Employees on empN1.Id equals empN2.ManagerId
+            //           join empN3 in _context.Employees on empN2.Id equals empN3.ManagerId
+            //           where empN1.Id == employeeId
+            //           select empN3).CountAsync();
+            //return myTeamCount;
+        }
+
+        private Team GetTeam(Team team, int managerId)
+        {
+            if (team.EmployeeId == managerId) return team;
+            foreach (var employeeTeam in team.EmployeeTeam)
+            {
+                if(employeeTeam.EmployeeId == managerId) return employeeTeam;
+                return GetTeam(employeeTeam, managerId);
+            }
+
+            return null;
         }
     }
 }

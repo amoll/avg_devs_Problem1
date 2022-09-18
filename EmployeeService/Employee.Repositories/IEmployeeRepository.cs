@@ -11,6 +11,7 @@ namespace Employee.Repositories
     public interface IEmployeeRepository
     {
         public Task<Models.Employee> GetEmployee(int id);
+        Task<Team> GetTeam(int employeeId);
         Task<int> GetTeamCount(int employeeId);
     }
 }
