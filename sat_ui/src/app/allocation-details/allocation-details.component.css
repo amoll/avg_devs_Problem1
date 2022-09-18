@@ -41,3 +41,11 @@ seat {
 .custom-tooltip {
   --bs-tooltip-bg: var(--bs-dark);
 }
+.graycolor
+{
+  color: gray;
+}
+.whitecolor
+{
+  color: white;
+}

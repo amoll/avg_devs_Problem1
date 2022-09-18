@@ -33,7 +33,7 @@
                     <select class="form-select form-select-sm" aria-label=".form-select-sm example"
                         (change)="onChangeEmployee($event)" [(ngModel)]="selectedEmployee" name="ddlEmployee">
                         <option selected>Select Manager</option>
-                        <option *ngFor="let emp of employee" value="{{emp.employeeId}}"> {{emp.employeeName}}
+                        <option *ngFor="let emp of employee" value="{{emp.employeeId}}"> {{emp.employeeName}} (EMPID : {{emp.employeeId}} )
                     </select>
                 </div>
             </div>

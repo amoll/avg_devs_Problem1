@@ -38,7 +38,6 @@ export class AllocationComponent implements OnInit {
     this.locations = this.getLocations();
     this.getDepartment();
     this.floors = this.getFloors();
-    this.allocationList = this.zones;
   }
 
   getLocations() {
@@ -53,7 +52,6 @@ export class AllocationComponent implements OnInit {
   }
   getFloors() {
      if (this.userDetails.role == "Admin") {
-      this.isDepartmentDisable=false;
       this.lacationService
         .getDetailsByLocationID(this.selectedLocation)
         .subscribe((data) => {
@@ -91,11 +89,13 @@ export class AllocationComponent implements OnInit {
   }
 
   onChangeEmployee(event: any) {
-    if (this.userDetails.role != "Admin") {
     var employeeId = event.target.value;
+
+    // if (this.userDetails.role != "Admin") {
     var depDetails=this.employee.filter((item:any) => item.employeeId == employeeId);
     this.selectedDepartment=depDetails[0].departmentId;
-    }
+    // }
+
     this.employeeService.getEmployeesCount(employeeId).subscribe((data) => {
       this.employeeCount = data;
     });
@@ -105,24 +105,48 @@ export class AllocationComponent implements OnInit {
     this.selectedZone = event.target.value;
   }
   allocateSeatsToManager() {
+   let isEmployeeAlredyAllocated=false;
+   for (var index = 0; index < this.floors.length; index++) {
+    for (var index1 = 0; index1 < this.floors[index].zones.length; index1++) {
+      for (var index2 = 0; index2 < this.floors[index].zones[index1].desks.length; index2++) {
+        if (this.floors[index].zones[index1].desks[index2].allocatedToEmpId==this.selectedEmployee) {
+          isEmployeeAlredyAllocated=true;
+        }
+      }
+    }
+    }
+if(!isEmployeeAlredyAllocated)
+{
     var count = 0;
     for (var i = 0; i < this.zones.length; i++) {
-      //  if (this.zones[i].id == this.selectedZone) {
       for (var j = 0; j < this.zones[i].desks.length; j++) {
-        if (count < this.employeeCount.maxAllowedSeatAllocation) {
+        if (!this.zones[i].desks[j].booked && count < this.employeeCount.maxAllowedSeatAllocation) {
+          count++;
+        }
+      }
+    }
+    if (count != this.employeeCount.maxAllowedSeatAllocation) {
+      alert("Insufficient Seats on floor! Total : " + this.employeeCount.maxAllowedSeatAllocation + "(" + count + ")")
+    }
+    else {
+      var count = 0;
+    for (var i = 0; i < this.zones.length; i++) {
+      for (var j = 0; j < this.zones[i].desks.length; j++) {
+        if (!this.zones[i].desks[j].booked && count < this.employeeCount.maxAllowedSeatAllocation) {
           this.zones[i].desks[j].booked = true;
+          this.zones[i].desks[j].allocatedToEmpId = this.selectedEmployee;
           this.bookList.push(this.zones[i].desks[j].id);
           count++;
         }
       }
-      // }
     }
-    if (count != this.employeeCount.maxAllowedSeatAllocation) {
-      alert("insufficient Seats on floor! Total : " + this.employeeCount.maxAllowedSeatAllocation + "(" + count + ")")
-    }
-    else {
       this.isSave = true;
     }
+  }
+  else
+  {
+    alert("Space already allocated to Employee !" );
+  }
   }
   save() {
     var seatBook = {
