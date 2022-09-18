@@ -1,4 +1,5 @@
-﻿using Allocations.Models;
+﻿using Allocations.Entities;
+using Allocations.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,12 @@ namespace Allocations.Repositories.Sql
             _context = context;
         }
 
-        public async Task<IEnumerable<AllocationMaster>> GetAllocationsByEmployee(int employeeId, bool includeDetails = false)
+        public async Task<IEnumerable<Models.AllocationMaster>> GetAllocationsByEmployee(int employeeId, bool includeDetails = false)
         {
             var allocationMaster = _context.AllocationMaster.Where(am => am.AllocatedByEmpId.Equals(employeeId));
             if (includeDetails) allocationMaster.Include(am => am.AllocationDetails);
             var allocations = await _context.AllocationMaster.Where(am => am.AllocatedByEmpId.Equals(employeeId))
-                .Select(am1 => new AllocationMaster
+                .Select(am1 => new Models.AllocationMaster
                 {
                     Id = am1.Id,
                     AllocatedBy = am1.AllocatedByEmpId
@@ -30,7 +31,7 @@ namespace Allocations.Repositories.Sql
                     AllocatedTo = am1.AllocatedToEmpId,
                     StartDate = am1.StartDate,
                     EndDate = am1.EndDate,
-                    AllocationDetails = am1.AllocationDetails.Select(ad1 => new AllocationDetail
+                    AllocationDetails = am1.AllocationDetails.Select(ad1 => new Models.AllocationDetail
                     { Id = ad1.Id, DeskId = ad1.DeskId, AllocationMasterId = ad1.AllocationMasterId }).ToList()
                 })
                 .ToListAsync();
@@ -38,7 +39,7 @@ namespace Allocations.Repositories.Sql
             return allocations;
         }
 
-        public async Task<IEnumerable<Location>> GetAllLocations()
+        public async Task<IEnumerable<Models.Location>> GetAllLocations()
         {
             var locations = await _context.Locations
                 .Select(l => new Models.Location { Id = l.Id, LocationName = l.LocationName })
@@ -46,7 +47,7 @@ namespace Allocations.Repositories.Sql
             return locations;
         }
 
-        public async Task<Location> GetLocationDetail(int locationId)
+        public async Task<Models.Location> GetLocationDetail(int locationId)
         {
             var l1 = await _context.Locations
                 .Include(l => l.Floors).ThenInclude(f => f.Zones).ThenInclude(z => z.Desks)
@@ -68,32 +69,25 @@ namespace Allocations.Repositories.Sql
                                         join bd in bookedDeskDetails on a.Id equals bd.AllocationMasterId
                                         select new { a.Id, a.AllocatedToEmpId, bd.DeskId }).ToList();
 
-            //.Select(l1 => new Models.Location { Id = l1.Id, LocationName = l1.LocationName, Description = l1.Description
-            //    , Floors = l1.Floors.Select(f1 => new Floor { Id = f1.Id, FloorName = f1.FloorName, LocationId = f1.LocationId
-            //        , Zones = f1.Zones.Select(z1 => new Zone { Id = z1.Id, ZoneName = z1.ZoneName, FloorId = z1.FloorId
-            //            , Desks = z1.Desks.Select(d1 => new Desk { Id = d1.Id, DeskNumber = d1.DeskNumber, Description = d1.Description
-            //            , ZoneId = d1.ZoneId}).ToList()
-            //        }).ToList()
-            //    }).ToList()
-            //})
-            //.ToListAsync();
-            if (l1 == null) return new Location();
+            if (l1 == null) return new Models.Location();
+
+            //TODO: Refactor this code. move the mapping logic to new function
             var location = new Models.Location
             {
                 Id = l1.Id,
                 LocationName = l1.LocationName,
                 Description = l1.Description,
-                Floors = l1.Floors.Select(f1 => new Floor
+                Floors = l1.Floors.Select(f1 => new Models.Floor
                 {
                     Id = f1.Id,
                     FloorName = f1.FloorName,
                     LocationId = f1.LocationId,
-                    Zones = f1.Zones.Select(z1 => new Zone
+                    Zones = f1.Zones.Select(z1 => new Models.Zone
                     {
                         Id = z1.Id,
                         ZoneName = z1.ZoneName,
                         FloorId = z1.FloorId,
-                        Desks = z1.Desks.Select(d1 => new Desk
+                        Desks = z1.Desks.Select(d1 => new Models.Desk
                         {
                             Id = d1.Id,
                             DeskNo = d1.DeskNo,
@@ -111,9 +105,9 @@ namespace Allocations.Repositories.Sql
             return location;
         }
 
-        public async Task<Location> GetLocationDetail(int locationId, int employeeId)
+        public async Task<Models.Location> GetLocationDetail(int locationId, int employeeId)
         {
-            var l1 = await _context.Locations
+            var locationDb = await _context.Locations
                 .Include(l => l.Floors).ThenInclude(f => f.Zones).ThenInclude(z => z.Desks)
                 .FirstOrDefaultAsync(loc => loc.Id.Equals(locationId));
 
@@ -134,35 +128,8 @@ namespace Allocations.Repositories.Sql
                                       where (l.Id == locationId && am.AllocatedByEmpId == employeeId)
                                       select ad.DeskId).ToListAsync();
 
-            if (l1 == null) return new Location();
-            var location = new Models.Location
-            {
-                Id = l1.Id,
-                LocationName = l1.LocationName,
-                Description = l1.Description,
-                Floors = l1.Floors.Select(f1 => new Floor
-                {
-                    Id = f1.Id,
-                    FloorName = f1.FloorName,
-                    LocationId = f1.LocationId,
-                    Zones = f1.Zones.Select(z1 => new Zone
-                    {
-                        Id = z1.Id,
-                        ZoneName = z1.ZoneName,
-                        FloorId = z1.FloorId,
-                        Desks = z1.Desks.Select(d1 => new Desk
-                        {
-                            Id = d1.Id,
-                            DeskNo = d1.DeskNo,
-                            Description = d1.Description,
-                            ZoneId = d1.ZoneId,
-                            Available = allowedDesks.Contains(d1.Id),
-                            Booked = allowedDesks.Contains(d1.Id) 
-                                ? bookedDesks.Contains(d1.Id) : false // show only the allowed desk to user. other desk should be disable
-                        }).ToList()
-                    }).ToList()
-                }).ToList()
-            };
+            if (locationDb == null) return new Models.Location();
+            var location = MapLocation(locationDb, allowedDesks, bookedDesks);
 
             return location;
         }
@@ -182,6 +149,38 @@ namespace Allocations.Repositories.Sql
             _context.AllocationMaster.Add(allocationToSave);
             await _context.SaveChangesAsync();
             return allocationToSave.Id;
+        }
+
+        private Models.Location MapLocation(Entities.Location locationDb, List<int?> allowedDesks, List<int?> bookedDesks)
+        {
+            return new Models.Location
+            {
+                Id = locationDb.Id,
+                LocationName = locationDb.LocationName,
+                Description = locationDb.Description,
+                Floors = locationDb.Floors.Select(f1 => new Models.Floor
+                {
+                    Id = f1.Id,
+                    FloorName = f1.FloorName,
+                    LocationId = f1.LocationId,
+                    Zones = f1.Zones.Select(z1 => new Models.Zone
+                    {
+                        Id = z1.Id,
+                        ZoneName = z1.ZoneName,
+                        FloorId = z1.FloorId,
+                        Desks = z1.Desks.Select(d1 => new Models.Desk
+                        {
+                            Id = d1.Id,
+                            DeskNo = d1.DeskNo,
+                            Description = d1.Description,
+                            ZoneId = d1.ZoneId,
+                            Available = allowedDesks.Contains(d1.Id),
+                            Booked = allowedDesks.Contains(d1.Id)
+                                ? bookedDesks.Contains(d1.Id) : false // show only the allowed desk to user. other desk should be disable
+                        }).ToList()
+                    }).ToList()
+                }).ToList()
+            };
         }
     }
 }
