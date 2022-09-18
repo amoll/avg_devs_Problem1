@@ -11,9 +11,9 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Book Seat</h5>
@@ -22,13 +22,16 @@
             <div class="modal-body">
 
                 <div class="row">
-                    <div class="mb-3">
+                    <div class="col-4">
                         <label for="exampleFormControlInput1" class="form-label">From Date</label>
                         <input type="date" class="form-control" id="fromDate" name="fromDate" [(ngModel)]="fromDate">
                     </div>
-                    <div class="mb-3">
+                    <div class="col-4">
                         <label for="exampleFormControlInput1" class="form-label">To Date</label>
                         <input type="date" class="form-control"  id="toDate" name="toDate" [(ngModel)]="toDate">
+                    </div>
+                    <div class="col-4">
+                        <button type="button"  class="btn btn-primary my-4 py-3" (click)="checkSeatAvalibility()">Check Avalibility</button>
                     </div>
                 </div>
 

@@ -24,4 +24,15 @@ export class ModalComponent implements OnInit {
   //   start: new FormControl(new Date(year, month, 15)),
   //   end: new FormControl(new Date(year, month, 19)),
   // });
+  checkSeatAvalibility()
+  {
+    debugger
+    console.log(this.fromDate )
+    console.log(this.toDate )
+    var now = new Date();
+var daysOfYear = [];
+for (var d = new Date(this.fromDate); d <= new Date(this.toDate ); d.setDate(d.getDate() + 1)) {
+  console.log(d);
+}
+  }
 }
