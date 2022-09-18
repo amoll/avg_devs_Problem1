@@ -41,18 +41,42 @@ namespace AllocationService.Api.Controllers
             return location;
         }
 
-        // GET api/<AllocationsController>/5
-        [HttpGet("{id}")]
-        public async Task<string> Get(int id)
+        [HttpGet("locations/{id}/Employee/{employeeId}")]
+        public async Task<Location> GetLocation(int id, int employeeId)
         {
-            var v = await _allocationRepository.GetAllocation(id);
-            return "value";
+            var location = await _allocationRepository.GetLocationDetail(id, employeeId);
+            return location;
         }
+
+        [HttpGet("{id}")]
+        public async Task<IEnumerable<AllocationMaster>> GetAllocations(int id)
+        {
+            var allocations = await _allocationRepository.GetAllocationsByEmployee(id);
+            return allocations;
+        }
+
+        [HttpGet("{id}/details")]
+        public async Task<IEnumerable<AllocationMaster>> GetAllocationDetails(int id)
+        {
+            var allocations = await _allocationRepository.GetAllocationsByEmployee(id);
+            return allocations;
+        }
+
+
+        //// GET api/<AllocationsController>/5
+        //[HttpGet("{id}")]
+        //public async Task<string> Get(int id)
+        //{
+        //    var v = await _allocationRepository.GetAllLocations();
+        //    return "value";
+        //}
 
         // POST api/<AllocationsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<int> Post([FromBody] Allocation allocation)
         {
+            var allocationId = await _allocationRepository.AddAllocation(allocation);
+            return allocationId;
         }
 
         // PUT api/<AllocationsController>/5

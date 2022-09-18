@@ -9,8 +9,10 @@ namespace Allocations.Repositories
 {
     public interface IAllocationRepository
     {
+        Task<int> AddAllocation(Allocation allocation);
         Task<IEnumerable<Location>> GetAllLocations();
-        Task<Models.AllocationDetail> GetAllocation(int id);
+        Task<IEnumerable<AllocationMaster>> GetAllocationsByEmployee(int employeeId, bool includeDetails = false);
         Task<Location> GetLocationDetail(int locationId);
+        Task<Location> GetLocationDetail(int locationId, int employeeId);
     }
 }

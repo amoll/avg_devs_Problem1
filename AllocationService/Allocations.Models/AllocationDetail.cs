@@ -9,7 +9,7 @@ namespace Allocations.Models
     public class AllocationDetail
     {
         public int Id { get; set; }
-        public int? AllocationId { get; set; }
+        public int? AllocationMasterId { get; set; }
         public int? DeskId { get; set; }
 
     }

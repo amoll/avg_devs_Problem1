@@ -12,13 +12,15 @@ namespace Allocations.Repositories.Sql
     {
         public AllocationDbContext(DbContextOptions<AllocationDbContext> options) : base(options)
         {
-
+            
         }
 
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Floor> Floors { get; set; }
         public virtual DbSet<Zone> Zones { get; set; }
         public virtual DbSet<Desk> Desks { get; set; }
+        public virtual DbSet<AllocationMaster> AllocationMaster { get; set; }
+        public virtual DbSet<AllocationDetail> AllocationDetails { get; set; }
 
     }
 }

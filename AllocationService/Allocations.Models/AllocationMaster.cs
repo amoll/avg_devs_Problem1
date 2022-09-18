@@ -9,9 +9,10 @@ namespace Allocations.Models
     public class AllocationMaster
     {
         public int Id { get; set; }
-        public DateOnly StartDate { get; set; }
-        public DateOnly EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public int? AllocatedBy { get; set; }
         public int? AllocatedTo { get; set; }
+        public List<AllocationDetail>? AllocationDetails { get; set; } = new List<AllocationDetail>();
     }
 }
