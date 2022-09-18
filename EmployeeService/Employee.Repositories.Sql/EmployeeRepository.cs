@@ -28,10 +28,6 @@ namespace Employee.Repositories.Sql
         public async Task<int> GetTeamCount(int employeeId)
         {
             if(employeeId == 0) return 0;
-
-            //var team = await _context.Employees.Where(e => e.ManagerId == employeeId)
-            //                .SelectMany(empN2 => _context.Employees.Where(empN3 => empN3.ManagerId == empN2.Id).DefaultIfEmpty())
-            //                .CountAsync();
             var teamCount = 0;
             var manager = await _context.Employees.FirstOrDefaultAsync(e => e.Id.Equals(employeeId));
             if(manager == null) return teamCount;
@@ -50,16 +46,6 @@ namespace Employee.Repositories.Sql
             }
 
             return teamCount;
-            //var team = await _context.Employees.Include(e => e.Manager)
-            //                .Where(e => e.ManagerId == employeeId)
-            //                .SelectMany(e => e)
-
-            //var myTeamCount = await (from empN1 in _context.Employees
-            //           join empN2 in _context.Employees on empN1.Id equals empN2.ManagerId
-            //           join empN3 in _context.Employees on empN2.Id equals empN3.ManagerId
-            //           where empN1.Id == employeeId
-            //           select empN3).CountAsync();
-            //return myTeamCount;
         }
 
         public async Task<IEnumerable<Team>> GetTopLevelEmployee()
@@ -78,16 +64,10 @@ namespace Employee.Repositories.Sql
         public async Task<Team> GetTeam(int employeeId)
         {
             if (employeeId == 0) return null;
-
-            //var team = await _context.Employees.Where(e => e.ManagerId == employeeId)
-            //                .SelectMany(empN2 => _context.Employees.Where(empN3 => empN3.ManagerId == empN2.Id).DefaultIfEmpty())
-            //                .CountAsync();
             var teamCount = 0;
             var manager = await _context.Employees.FirstOrDefaultAsync(e => e.Id.Equals(employeeId));
             if (manager == null) return null;
 
-            //var oeCodes = await _context.OECodes.ToListAsync();
-            //var managerOECode = oeCodes.First(oe => oe.Id == manager.OECodeId);
             var employeeTeam = new Team
             {
                 EmployeeId = manager.Id,
@@ -121,16 +101,6 @@ namespace Employee.Repositories.Sql
             }
 
             return employeeTeam;
-            //var team = await _context.Employees.Include(e => e.Manager)
-            //                .Where(e => e.ManagerId == employeeId)
-            //                .SelectMany(e => e)
-
-            //var myTeamCount = await (from empN1 in _context.Employees
-            //           join empN2 in _context.Employees on empN1.Id equals empN2.ManagerId
-            //           join empN3 in _context.Employees on empN2.Id equals empN3.ManagerId
-            //           where empN1.Id == employeeId
-            //           select empN3).CountAsync();
-            //return myTeamCount;
         }
 
         private Team GetTeam(Team team, int managerId)
