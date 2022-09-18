@@ -1,0 +1,27 @@
+seat {
+    border: solid 1px;
+    border-color: black;
+  }
+  .rcorners1 {
+    border-radius: 25px;
+    /* background: #73AD21; */
+    padding: 20px;
+    border: solid 3px;
+    border-color: brown;
+    /* width: 200px;
+      height: 150px; */
+  }
+  .sdesc {
+    /* font-weight: 100; */
+    font-size: xx-small;
+    font-weight: bold;
+  }
+  .seat-border {
+    border-radius: 25px;
+    /* background: #73AD21; */
+    padding: 2px 2px 2px 35px;
+    border: solid 1px;
+    border-color: rgb(191, 182, 203);
+    margin: 10px 10px 10px 10px;
+  }
+  

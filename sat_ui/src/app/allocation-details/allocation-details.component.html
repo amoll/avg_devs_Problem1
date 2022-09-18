@@ -1,0 +1,14 @@
+<p>allocation-details works!</p>
+<div class="rcorners1">
+    <div class="row">
+        <div class="col-1 seat-border" *ngFor="let item of allocationList">
+            <div data-bs-toggle="tooltip"  type="button">
+                <img *ngIf="item.isAlocated" src="/assets/seat_icon_a_32.png" alt="image">
+                <img *ngIf="!item.isAlocated" src="/assets/seat_icon_d_32.png" alt="image">
+                <div style="font-weight:bold; color: gray;">{{item.seatNumber}}</div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

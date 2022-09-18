@@ -12,6 +12,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { MainComponent } from './main/main.component';
 import { ModalComponent } from './modal/modal.component';
+import { AllocationComponent } from './allocation/allocation.component';
+import { AllocationDetailsComponent } from './allocation-details/allocation-details.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { ModalComponent } from './modal/modal.component';
     NavbarComponent,
     FooterComponent,
     MainComponent,
-    ModalComponent
+    ModalComponent,
+    AllocationComponent,
+    AllocationDetailsComponent
   ],
   imports: [
     BrowserModule,
