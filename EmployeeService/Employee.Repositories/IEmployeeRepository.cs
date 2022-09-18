@@ -13,5 +13,6 @@ namespace Employee.Repositories
         public Task<Models.Employee> GetEmployee(int id);
         Task<Team> GetTeam(int employeeId);
         Task<int> GetTeamCount(int employeeId);
+        Task<IEnumerable<Team>> GetTopLevelEmployee();
     }
 }

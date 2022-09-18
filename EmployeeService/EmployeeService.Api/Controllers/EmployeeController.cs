@@ -52,6 +52,13 @@ namespace EmployeeService.Api.Controllers
             return team;
         }
 
+        [HttpGet("Admin")]
+        public async Task<IEnumerable<Team>> GetTopLevelEmployees(int id)
+        {
+            var topLevelEmployees = await _employeeRepository.GetTopLevelEmployee();
+            return topLevelEmployees;
+        }
+
         // POST api/<EmployeeController>
         [HttpPost]
         public void Post([FromBody] string value)

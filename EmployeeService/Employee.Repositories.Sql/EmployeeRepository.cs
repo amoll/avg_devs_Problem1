@@ -62,6 +62,19 @@ namespace Employee.Repositories.Sql
             //return myTeamCount;
         }
 
+        public async Task<IEnumerable<Team>> GetTopLevelEmployee()
+        {
+            var topLevelEmployees = await _context.Employees.Where(e => e.ManagerId == null).Select(e1 => new Team
+            {
+                EmployeeId = e1.Id,
+                EmployeeName = e1.LastName + ", " + e1.LastName,
+                ManagerId = e1.ManagerId,
+                DepartmentId = e1.DepartmentId,
+                OECodeId = e1.OECodeId
+            }).ToListAsync();
+            return topLevelEmployees;            
+        }
+
         public async Task<Team> GetTeam(int employeeId)
         {
             if (employeeId == 0) return null;
