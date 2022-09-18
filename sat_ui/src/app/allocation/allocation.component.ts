@@ -34,17 +34,28 @@ export class AllocationComponent implements OnInit {
   }
 
   getLocations() {
-    debugger
     this.lacationService.getLoacations().subscribe((data) => {
       this.locations = data;
     });
   }
   getFloors() {
-    this.lacationService
-      .getDetailsByLocationID(this.selectedLocation)
-      .subscribe((data) => {
-        this.floors = data.floors;
-      });
+    const idUser: any = localStorage.getItem('currentUser');
+    const item = JSON.parse(idUser);
+    if (item.role == "Admin") {
+      this.lacationService
+        .getDetailsByLocationID(this.selectedLocation)
+        .subscribe((data) => {
+          this.floors = data.floors;
+        });
+    }
+    else {
+      this.lacationService
+        .getLocationByEmployeeID(this.selectedLocation, item.id)
+        .subscribe((data) => {
+          this.floors = data.floors;
+        });
+    }
+
   }
   onChangeFloor(event: any) {
     var floorid = event.target.value;

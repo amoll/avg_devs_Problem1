@@ -7,10 +7,14 @@ import { catchError, map, retry } from 'rxjs/operators';
 })
 export class EmployeeService {
 
-  baseUrl="https://employeeserviceapi20220918143939new.azurewebsites.net/api/Employee/"
+  baseUrl = "https://employeeserviceapi20220918143939new.azurewebsites.net/api/Employee/"
   constructor(private http: HttpClient) { }
 
-  getEmployeesCount(id :any) {
-    return this.http.get<any>(this.baseUrl+id+"/team/count");
+  getEmployeesCount(id: any) {
+    return this.http.get<any>(this.baseUrl + id + "/team/count");
   }
+  getEmployeesTeam(id: any) {
+    return this.http.get<any>(this.baseUrl + id + "/team");
+  }
+ // https://employeeserviceapi20220918143939new.azurewebsites.net/api/Employee/1/team
 }
