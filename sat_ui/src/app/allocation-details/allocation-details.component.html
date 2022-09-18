@@ -1,14 +1,24 @@
-<p>allocation-details works!</p>
 <div class="rcorners1">
-    <div class="row">
-        <div class="col-1 seat-border" *ngFor="let item of allocationList">
-            <div data-bs-toggle="tooltip"  type="button">
-                <img *ngIf="item.isAlocated" src="/assets/seat_icon_a_32.png" alt="image">
-                <img *ngIf="!item.isAlocated" src="/assets/seat_icon_d_32.png" alt="image">
-                <div style="font-weight:bold; color: gray;">{{item.seatNumber}}</div>
-            </div>
+  <div *ngFor="let allocation of allocationList" >
+    <h1 style="color: white;"> {{allocation.zoneName}} </h1>
+    <div class="row seat-border">
+      <!-- <div class="col-1 seat-border" *ngFor="let item of allocation.desks"
+        [attr.disabled]="item.isAlocated ? true : null" (click)="enableDisableRule(item,allocation.zone)"
+        [ngClass]="{'green' : item.isAlocated, 'red': !item.isAlocated}"
+        > -->
+      <div class="col-1 seat-border" *ngFor="let item of allocation.desks" [ngClass]="{'red' : !item.booked}">
+        <div type="button" style="font-weight: bold; color: gray">
+          <!-- <img  src="/assets/seat_icon_d_32.png" alt="image" /> -->
+          <div class="text-center">
+            {{ item.deskNo }}
+          </div>
         </div>
-
+      </div>
     </div>
 
+  </div>
 </div>
+<!-- <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom"
+  data-bs-custom-class="custom-tooltip" data-bs-title="This top tooltip is themed via CSS variables.">
+  Custom tooltip
+</button> -->

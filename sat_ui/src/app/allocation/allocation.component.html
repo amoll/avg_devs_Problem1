@@ -1,2 +1,99 @@
-<p>allocation works!</p>
-<app-allocation-details [allocationList]="allocationList"></app-allocation-details>
+<form action="">
+    <div class="row mb-3"
+        style="background-color: rgb(95, 94, 94);; border-bottom-left-radius: 1em ; border-top-right-radius: 1em ;">
+        <div class="col-6">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label" style="color: white;">Location</label>
+                <select class="form-select form-select-sm" aria-label=".form-select-sm example"
+                    [(ngModel)]="selectedLocation">
+                    <option selected>Select location</option>
+                    <option *ngFor="let location of locations" value="{{location.id}}"> {{location.locationName}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label" style="color: white;">Floor</label>
+                <select class="form-select form-select-sm" aria-label=".form-select-sm example"
+                    [(ngModel)]="selectedFloor" (change)="onChangeFloor($event)">
+                    <option selected>Select Floor</option>
+                    <option *ngFor="let floor of floors" value="{{floor.id}}"> {{floor.floorName}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+    <div>
+        <div class="row" style="background-color: rgb(95, 94, 94); border-top-left-radius: 1em;   ">
+            <div class="col-6">
+                <div class="mb-3 ">
+                    <label for="exampleInputEmail1" class="form-label" style="color: white;">Manager</label>
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example"
+                        (change)="onChangeEmployee($event)">
+                        <option selected>Select Manager</option>
+                        <option value="1">Anthony</option>
+                        <option value="2">Stark</option>
+                        <option value="3">Bob</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label" style="color: white;">Department</label>
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <option selected>Select Department</option>
+                        <option value="AAA">AAA</option>
+                        <option value="BBB">BBB</option>
+                        <option value="CCC">CCC</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="background-color: rgb(95, 94, 94); border-bottom-right-radius: 1em ;">
+            <div class="col-6">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label" style="color: white;">Zone</label>
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <option selected>Select zone</option>
+                        <option *ngFor="let zone of zones" value="{{zone.id}}"> {{zone.zoneName}}
+                    </select>
+                </div>
+            </div>
+            <div class="col-6">
+                <label for="exampleInputEmail1" class="form-label" style="color: white;">Dates</label>
+                <div class="input-group mb-3">
+                    <input type="date" class="form-control form-control-sm" placeholder="From Date" aria-label="From">
+                    <span class="input-group-text">To</span>
+                    <input type="date" class="form-control" placeholder="To Date" aria-label="To">
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+
+    <div class="row">
+        <div class="col-4">Team Size : {{employeeCount?.teamCount}}</div>
+        <div class="col-6">Seat Capacity : {{employeeCount?.maxAllowedSeatAllocation}} (65%)</div>
+        <div class="col-6"></div>
+    </div>
+    <br> <br>
+    <div class="text-center">
+        <div class="row">
+            <div class="col-4"> <button type="submit" class="btn btn-secondary">Allocate Seats</button></div>
+            <div class="col-4"><button type="submit" class="btn btn-secondary">Submit</button> </div>
+        </div>
+
+    </div>
+    <br>
+
+</form>
+
+<div>
+
+    <app-allocation-details [allocationList]="zones"></app-allocation-details>
+</div>
