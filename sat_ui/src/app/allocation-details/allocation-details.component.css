@@ -4,10 +4,12 @@ seat {
   }
   .rcorners1 {
     border-radius: 25px;
-    /* background: #73AD21; */
+    /* background: url("/assets/floor2.jpg"); */
+    background-color:rgb(95, 94, 94);
+    
     padding: 20px;
     border: solid 3px;
-    border-color: brown;
+    border-color:rgb(95, 94, 94);
     /* width: 200px;
       height: 150px; */
   }
@@ -19,9 +21,23 @@ seat {
   .seat-border {
     border-radius: 25px;
     /* background: #73AD21; */
-    padding: 2px 2px 2px 35px;
+    background: aliceblue;
+    padding: 2px 20px 2px 20px;
     border: solid 1px;
     border-color: rgb(191, 182, 203);
     margin: 10px 10px 10px 10px;
   }
-  
+
+  .green {
+    background-color: #09e839;
+}
+.green:hover{
+  background-color: #2aff58;
+}
+
+.red {
+    background-color: #f47835;
+}
+.custom-tooltip {
+  --bs-tooltip-bg: var(--bs-dark);
+}
