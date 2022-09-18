@@ -106,7 +106,6 @@ export class AllocationComponent implements OnInit {
       endDate: this.toDate,
       desks: this.bookList
     }
-
     this.lacationService.bookAllocation(seatBook).subscribe((data) => {
       alert("Save Record Sucessfuly!")
     });
