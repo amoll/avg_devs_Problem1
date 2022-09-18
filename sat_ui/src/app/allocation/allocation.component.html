@@ -33,9 +33,7 @@
                     <select class="form-select form-select-sm" aria-label=".form-select-sm example"
                         (change)="onChangeEmployee($event)" [(ngModel)]="selectedEmployee" name="ddlEmployee">
                         <option selected>Select Manager</option>
-                        <option value="1">Anthony</option>
-                        <option value="2">Stark</option>
-                        <option value="3">Bob</option>
+                        <option *ngFor="let emp of employee" value="{{emp.employeeId}}"> {{emp.employeeName}}
                     </select>
                 </div>
             </div>
@@ -44,11 +42,9 @@
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label" style="color: white;">Department</label>
                     <select class="form-select form-select-sm" aria-label=".form-select-sm example"
-                        name="ddlDepartment">
+                        name="ddlDepartment" [(ngModel)]="selectedDepartment"  [disabled]="isDepartmentDisable">
                         <option selected>Select Department</option>
-                        <option value="AAA">AAA</option>
-                        <option value="BBB">BBB</option>
-                        <option value="CCC">CCC</option>
+                        <option *ngFor="let department of departmentList" value="{{department.id}}"> {{department.name}}
                     </select>
                 </div>
             </div>
@@ -92,7 +88,7 @@
     <div class="text-center">
         <div class="row">
             <div class="col-4"> <button type="submit" class="btn btn-secondary"
-                    (click)="allocateSeatsToManager()">Allocate Seats</button></div>
+                    (click)="allocateSeatsToManager()">Allocate Space</button></div>
             <div class="col-4"><button type="submit" class="btn btn-secondary" [disabled]="!isSave"
                     (click)="save()">Submit</button>
             </div>

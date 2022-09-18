@@ -16,5 +16,12 @@ export class EmployeeService {
   getEmployeesTeam(id: any) {
     return this.http.get<any>(this.baseUrl + id + "/team");
   }
- // https://employeeserviceapi20220918143939new.azurewebsites.net/api/Employee/1/team
+  getEmployeesAdmin() {
+    const url="https://employeeserviceapi20220918143939new.azurewebsites.net/api/Employee/Admin"
+    return this.http.get<any>(url);
+  }
+  getEmployeesDepartment() {
+    const url="https://employeeserviceapi20220918143939new.azurewebsites.net/api/Employee/Departments"
+    return this.http.get<any>(url);
+  }
 }

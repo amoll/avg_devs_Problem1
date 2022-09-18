@@ -22,13 +22,21 @@ export class AllocationComponent implements OnInit {
   startDate: Date = new Date();
   toDate: Date = new Date();
   isSave: boolean = false;
+  userDetails:any;
+  employee:any=[];
+  departmentList:any=[];
+  selectedDepartment:any;
+  isDepartmentDisable:boolean=true;
   constructor(
     private lacationService: AllocationService,
     private employeeService: EmployeeService
   ) { }
 
   ngOnInit(): void {
+    const idUser: any = localStorage.getItem('currentUser');
+    this.userDetails = JSON.parse(idUser);
     this.locations = this.getLocations();
+    this.getDepartment();
     this.floors = this.getFloors();
     this.allocationList = this.zones;
   }
@@ -38,21 +46,36 @@ export class AllocationComponent implements OnInit {
       this.locations = data;
     });
   }
+  getDepartment() {
+    this.employeeService.getEmployeesDepartment().subscribe((data) => {
+      this.departmentList = data;
+    });
+  }
   getFloors() {
-    const idUser: any = localStorage.getItem('currentUser');
-    const item = JSON.parse(idUser);
-    if (item.role == "Admin") {
+     if (this.userDetails.role == "Admin") {
+      this.isDepartmentDisable=false;
       this.lacationService
         .getDetailsByLocationID(this.selectedLocation)
         .subscribe((data) => {
           this.floors = data.floors;
         });
+
+        this.employeeService
+        .getEmployeesAdmin()
+        .subscribe((data) => {
+          this.employee = data;
+        });
     }
     else {
       this.lacationService
-        .getLocationByEmployeeID(this.selectedLocation, item.id)
+        .getLocationByEmployeeID(this.selectedLocation,this.userDetails.id)
         .subscribe((data) => {
           this.floors = data.floors;
+        });
+        this.employeeService
+        .getEmployeesTeam(this.userDetails.id)
+        .subscribe((data) => {
+          this.employee = data.employeeTeam;
         });
     }
 
@@ -68,7 +91,11 @@ export class AllocationComponent implements OnInit {
   }
 
   onChangeEmployee(event: any) {
+    if (this.userDetails.role != "Admin") {
     var employeeId = event.target.value;
+    var depDetails=this.employee.filter((item:any) => item.employeeId == employeeId);
+    this.selectedDepartment=depDetails[0].departmentId;
+    }
     this.employeeService.getEmployeesCount(employeeId).subscribe((data) => {
       this.employeeCount = data;
     });
@@ -98,9 +125,8 @@ export class AllocationComponent implements OnInit {
     }
   }
   save() {
-    const idUser = localStorage.getItem('id');
     var seatBook = {
-      allocatedByEmpId: idUser,
+      allocatedByEmpId: this.userDetails.id,
       allocatedToEmpId: this.selectedEmployee,
       startDate: this.startDate,
       endDate: this.toDate,
