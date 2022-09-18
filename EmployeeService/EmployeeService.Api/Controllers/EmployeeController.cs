@@ -8,6 +8,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace EmployeeService.Api.Controllers
 {
+    //TODO: Add logging and error handling
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
