@@ -103,6 +103,18 @@ namespace Employee.Repositories.Sql
             return employeeTeam;
         }
 
+        public async Task<IEnumerable<Department>> GetAllDepartments()
+        {
+            var departments = await _context.Departments.Select(d => new Models.Department
+            {
+                Id = d.Id,
+                Code = d.DepartmentCode,
+                Name = d.DepartmentName,
+                Description = d.Description
+            }).ToListAsync();
+            return departments;
+        }
+
         private Team GetTeam(Team team, int managerId)
         {
             if (team.EmployeeId == managerId) return team;

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeService.Api.Controllers
 {
+
+    //IGNORE THIS CLASS. THIS IS TEST CLASS
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -22,6 +24,7 @@ namespace EmployeeService.Api.Controllers
             _employeeRepository = employeeRepository;
         }
 
+        //IGNORE THIS CLASS. THIS IS TEST CLASS
         [HttpGet]
         public async Task<IEnumerable<WeatherForecast>> Get()
         {

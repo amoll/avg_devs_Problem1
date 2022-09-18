@@ -51,5 +51,12 @@ namespace EmployeeService.Api.Controllers
             var topLevelEmployees = await _employeeRepository.GetTopLevelEmployee();
             return topLevelEmployees;
         }
+
+        [HttpGet("Departments")]
+        public async Task<IEnumerable<Department>> GetAllDepartments()
+        {
+            var departments = await _employeeRepository.GetAllDepartments();
+            return departments;
+        }
     }
 }
