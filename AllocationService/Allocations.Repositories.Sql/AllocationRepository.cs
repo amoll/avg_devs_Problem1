@@ -52,13 +52,21 @@ namespace Allocations.Repositories.Sql
                 .Include(l => l.Floors).ThenInclude(f => f.Zones).ThenInclude(z => z.Desks)
                 .FirstOrDefaultAsync(loc => loc.Id.Equals(locationId));
 
-            var bookedDesks = await (from l in _context.Locations
+            var bookedDeskDetails = await (from l in _context.Locations
                      join f in _context.Floors on l.Id equals f.LocationId
                      join z in _context.Zones on f.Id equals z.FloorId
                      join d in _context.Desks on z.Id equals d.ZoneId
                      join ad in _context.AllocationDetails on d.Id equals ad.DeskId
                      where l.Id == locationId
-                     select ad.DeskId).ToListAsync();
+                     select new { ad.DeskId, ad.AllocationMasterId}).ToListAsync();
+            var bookedDesks = bookedDeskDetails.Select(bd => bd.DeskId).ToList();
+            var allocationIds = bookedDeskDetails.Select(bd => bd.AllocationMasterId).Distinct().ToList();
+            
+            var allocations = await _context.AllocationMaster.Where(am => allocationIds.Contains(am.Id))
+                .Select(am1 => new { am1.Id, am1.AllocatedToEmpId }).ToListAsync();
+            var allocatedDeskDetails = (from a in allocations
+                                        join bd in bookedDeskDetails on a.Id equals bd.AllocationMasterId
+                                        select new { a.Id, a.AllocatedToEmpId, bd.DeskId }).ToList();
 
             //.Select(l1 => new Models.Location { Id = l1.Id, LocationName = l1.LocationName, Description = l1.Description
             //    , Floors = l1.Floors.Select(f1 => new Floor { Id = f1.Id, FloorName = f1.FloorName, LocationId = f1.LocationId
@@ -92,7 +100,9 @@ namespace Allocations.Repositories.Sql
                             Description = d1.Description,
                             ZoneId = d1.ZoneId,
                             Available = true,
-                            Booked = bookedDesks.Contains(d1.Id)
+                            Booked = bookedDesks.Contains(d1.Id),
+                            AllocatedToEmpId = bookedDesks.Contains(d1.Id) ? 
+                                allocatedDeskDetails.FirstOrDefault(add => add.DeskId == d1.Id)?.AllocatedToEmpId : null
                         }).ToList()
                     }).ToList()
                 }).ToList()

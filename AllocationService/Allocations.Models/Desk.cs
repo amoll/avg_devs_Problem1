@@ -12,6 +12,7 @@ namespace Allocations.Models
         public string? DeskNo { get; set; }
         public string? Description { get; set; }
         public int? ZoneId { get; set; }
+        public int? AllocatedToEmpId { get; set; }
         public bool Booked { get; set; } = false;
         public bool Available { get; set; } = false;
     }
