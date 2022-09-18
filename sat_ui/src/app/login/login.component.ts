@@ -63,22 +63,23 @@ export class LoginComponent implements OnInit {
     //              // this.loading = false;
     //           });
 
-              this.authenticationService.getLogin().subscribe(
+              this.authenticationService.login(this.userName, this.pwd)
+              .subscribe(
                 data => {
                     debugger;
                     console.log(data)
-                //   if(data.role=="Viewer")
-                //   {
-                //       this.router.navigate(['/booking', { id: data.empId }]);
-                //   }
-                //   else{
-                //       this.router.navigate(['/dashboard',{ id: data.empId }]);
-                //   }
+                  if(data.role=="Viewer")
+                  {
+                      this.router.navigate(['/booking', { id: data.id }]);
+                  }
+                  else{
+                      this.router.navigate(['/dashboard',{ id: data.id }]);
+                  }
                    
                 },
                 error => {
-                    //this.alertService.error(error);
-                   // this.loading = false;
+                  //   this.alertService.error(error);
+                  //  // this.loading = false;
                 });
   }
 

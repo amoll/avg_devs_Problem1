@@ -25,7 +25,5 @@ export class AllocationDetailsComponent implements OnInit {
       }
       
     }
-
-   // this.allocationList = JSON.stringify(checkedList);
   }
 }
