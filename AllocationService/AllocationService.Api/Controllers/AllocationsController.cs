@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AllocationService.Api.Controllers
 {
+    //TODO: Add logging and error handling
     [Route("api/[controller]")]
     [ApiController]
     public class AllocationsController : ControllerBase
