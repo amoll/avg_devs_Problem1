@@ -13,6 +13,7 @@ namespace EmployeeService.Api.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
+        //TODO: this should come from config
         private const int MAX_ALLOCATIONS_PERCENTAGE = 65;
 
         private readonly ILogger<EmployeeController> _logger;
