@@ -57,7 +57,7 @@
             <div class="col-6">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label" style="color: white;">Zone</label>
-                    <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example"  [(ngModel)]="selectedZone">
                         <option selected>Select zone</option>
                         <option *ngFor="let zone of zones" value="{{zone.id}}"> {{zone.zoneName}}
                     </select>
@@ -66,9 +66,9 @@
             <div class="col-6">
                 <label for="exampleInputEmail1" class="form-label" style="color: white;">Dates</label>
                 <div class="input-group mb-3">
-                    <input type="date" class="form-control form-control-sm" placeholder="From Date" aria-label="From">
+                    <input type="date" class="form-control form-control-sm" [(ngModel)]="startDate" placeholder="From Date" aria-label="From">
                     <span class="input-group-text">To</span>
-                    <input type="date" class="form-control" placeholder="To Date" aria-label="To">
+                    <input type="date" class="form-control" placeholder="To Date" [(ngModel)]="toDate" aria-label="To">
                 </div>
             </div>
         </div>
@@ -84,7 +84,7 @@
     <br> <br>
     <div class="text-center">
         <div class="row">
-            <div class="col-4"> <button type="submit" class="btn btn-secondary">Allocate Seats</button></div>
+            <div class="col-4"> <button type="submit" class="btn btn-secondary" (click)="allocateSeatsToManager()">Allocate Seats</button></div>
             <div class="col-4"><button type="submit" class="btn btn-secondary">Submit</button> </div>
         </div>
 
