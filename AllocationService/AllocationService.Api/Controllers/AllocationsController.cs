@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AllocationService.Api.Controllers
 {
+    //TODO: Add logging and error handling
     [Route("api/[controller]")]
     [ApiController]
     public class AllocationsController : ControllerBase
@@ -26,7 +27,7 @@ namespace AllocationService.Api.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/<AllocationsController>/5
+        // GET api/<AllocationsController>/locations
         [HttpGet("locations")]
         public async Task<IEnumerable<Location>> GetAllLocations()
         {
@@ -62,33 +63,12 @@ namespace AllocationService.Api.Controllers
             return allocations;
         }
 
-
-        //// GET api/<AllocationsController>/5
-        //[HttpGet("{id}")]
-        //public async Task<string> Get(int id)
-        //{
-        //    var v = await _allocationRepository.GetAllLocations();
-        //    return "value";
-        //}
-
         // POST api/<AllocationsController>
         [HttpPost]
         public async Task<int> Post([FromBody] Allocation allocation)
         {
             var allocationId = await _allocationRepository.AddAllocation(allocation);
             return allocationId;
-        }
-
-        // PUT api/<AllocationsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<AllocationsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

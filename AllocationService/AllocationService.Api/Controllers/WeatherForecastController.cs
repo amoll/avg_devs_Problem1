@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AllocationService.Api.Controllers
 {
+
+    //IGNORE THIS CLASS. THIS IS TEST CLASS
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -18,6 +20,7 @@ namespace AllocationService.Api.Controllers
             _logger = logger;
         }
 
+        //IGNORE THIS CLASS. THIS IS TEST CLASS
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {

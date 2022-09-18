@@ -8,10 +8,12 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace EmployeeService.Api.Controllers
 {
+    //TODO: Add logging and error handling
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
     {
+        //TODO: this should come from config
         private const int MAX_ALLOCATIONS_PERCENTAGE = 65;
 
         private readonly ILogger<EmployeeController> _logger;
@@ -50,6 +52,13 @@ namespace EmployeeService.Api.Controllers
         {
             var topLevelEmployees = await _employeeRepository.GetTopLevelEmployee();
             return topLevelEmployees;
+        }
+
+        [HttpGet("Departments")]
+        public async Task<IEnumerable<Department>> GetAllDepartments()
+        {
+            var departments = await _employeeRepository.GetAllDepartments();
+            return departments;
         }
     }
 }
