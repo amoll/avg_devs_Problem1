@@ -6,4 +6,5 @@
 /**/.vs
 bin
 obj
-/EmployeeService/EmployeeService.Api/EmployeeService.Api.csproj.user
+/**/*.user
+
