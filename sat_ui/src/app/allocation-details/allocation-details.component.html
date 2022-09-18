@@ -1,12 +1,12 @@
 <div class="rcorners1">
-  <div *ngFor="let allocation of allocationList" >
+  <div *ngFor="let allocation of allocationList">
     <h1 style="color: white;"> {{allocation.zoneName}} </h1>
     <div class="row seat-border">
       <!-- <div class="col-1 seat-border" *ngFor="let item of allocation.desks"
         [attr.disabled]="item.isAlocated ? true : null" (click)="enableDisableRule(item,allocation.zone)"
         [ngClass]="{'green' : item.isAlocated, 'red': !item.isAlocated}"
         > -->
-      <div class="col-1 seat-border" *ngFor="let item of allocation.desks" [ngClass]="{'red' : !item.booked}">
+      <div class="col-1 seat-border" *ngFor="let item of allocation.desks" [ngClass]="{'red' : item.booked}">
         <div type="button" style="font-weight: bold; color: gray">
           <!-- <img  src="/assets/seat_icon_d_32.png" alt="image" /> -->
           <div class="text-center">

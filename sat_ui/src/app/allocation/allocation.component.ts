@@ -9,21 +9,23 @@ import { EmployeeService } from '../service/employee.service';
   styleUrls: ['./allocation.component.css'],
 })
 export class AllocationComponent implements OnInit {
-  selectedLocation: any = '1';
-  selectedFloor: any;
-  selectedZone: any;
+  selectedLocation: any = 1;
+  selectedFloor: any = 0;
+  selectedZone: any = 0;
+  selectedEmployee: any = 0;
   allocationList: any = [];
   locations: any = [];
   floors: any = [];
   zones: any = [];
   employeeCount: any;
-  bookList:any=[];
-  startDate:Date=new Date();
-  toDate:Date=new Date();
+  bookList: any = [];
+  startDate: Date = new Date();
+  toDate: Date = new Date();
+  isSave: boolean = false;
   constructor(
     private lacationService: AllocationService,
     private employeeService: EmployeeService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.locations = this.getLocations();
@@ -47,7 +49,10 @@ export class AllocationComponent implements OnInit {
   onChangeFloor(event: any) {
     var floorid = event.target.value;
     for (var i = 0; i < this.floors.length; i++) {
-      if (this.floors[i].id == floorid) this.zones = this.floors[i].zones;
+      if (this.floors[i].id == floorid) {
+        this.zones = this.floors[i].zones;
+        this.allocationList = this.floors[i].zones;
+      }
     }
   }
 
@@ -57,19 +62,44 @@ export class AllocationComponent implements OnInit {
       this.employeeCount = data;
     });
   }
+
+  onChangeZone(event: any) {
+    this.selectedZone = event.target.value;
+  }
   allocateSeatsToManager() {
     var count = 0;
-    for (var i = 0; i < this.allocationList.length; i++) {
-      if (this.allocationList[i].id == this.selectedZone) {
-        for (var j = 0; j < this.allocationList[i].desks.length; j++) {
-          debugger
-          if (!this.allocationList[i].desks[j].booked && count < this.employeeCount.maxAllowedSeatAllocation ) {
-            this.allocationList[i].desks[j].booked=true;
-            this.bookList.push(this.allocationList[i].desks[j].id);
-            count++;
-          }
+    for (var i = 0; i < this.zones.length; i++) {
+      //  if (this.zones[i].id == this.selectedZone) {
+      for (var j = 0; j < this.zones[i].desks.length; j++) {
+        if (count < this.employeeCount.maxAllowedSeatAllocation) {
+          this.zones[i].desks[j].booked = true;
+          this.bookList.push(this.zones[i].desks[j].id);
+          count++;
         }
       }
+      // }
+    }
+    if (count != this.employeeCount.maxAllowedSeatAllocation) {
+      alert("insufficient Seats on floor! Total : " + this.employeeCount.maxAllowedSeatAllocation + "(" + count + ")")
+    }
+    else {
+      this.isSave = true;
     }
   }
+  save() {
+    const idUser = localStorage.getItem('id');
+    var seatBook = {
+      allocatedByEmpId: idUser,
+      allocatedToEmpId: this.selectedEmployee,
+      startDate: this.startDate,
+      endDate: this.toDate,
+      desks: this.bookList
+    }
+
+    this.lacationService.bookAllocation(seatBook).subscribe((data) => {
+      alert("Save Record Sucessfuly!")
+    });
+
+  }
+
 }

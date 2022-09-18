@@ -9,11 +9,18 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
 
   constructor(private router: Router) { }
-  btnClick() {
-    this.router.navigateByUrl('/booking/123');
-  }
+
   ngOnInit(): void {
   }
-  
 
+  btnClick() {
+    const id = localStorage.getItem('id');
+    console.log(id);
+    this.router.navigateByUrl('/booking/' + id);
+  }
+  btnClick2() {
+    const id = localStorage.getItem('id');
+    console.log(id);
+    this.router.navigateByUrl('/allocation/' + id);
+  }
 }

@@ -15,4 +15,11 @@ export class AllocationService {
   getDetailsByLocationID(id:any) {
     return this.http.get<any>(this.baseUrl+"/"+id);
   }
+
+  bookAllocation(book:any): Observable<any> {
+    const url="https://allocationserviceapi20220918143349new.azurewebsites.net/api/Allocations"
+    const headers = { 'content-type': 'application/json'} 
+    const body=JSON.stringify(book);
+    return this.http.post(url , body,{'headers':headers});
+  }
 }
