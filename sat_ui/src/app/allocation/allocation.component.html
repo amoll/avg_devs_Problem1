@@ -5,7 +5,7 @@
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label" style="color: white;">Location</label>
                 <select class="form-select form-select-sm" aria-label=".form-select-sm example"
-                    [(ngModel)]="selectedLocation">
+                    [(ngModel)]="selectedLocation" name="ddlLocation">
                     <option selected>Select location</option>
                     <option *ngFor="let location of locations" value="{{location.id}}"> {{location.locationName}}
                     </option>
@@ -16,7 +16,7 @@
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label" style="color: white;">Floor</label>
                 <select class="form-select form-select-sm" aria-label=".form-select-sm example"
-                    [(ngModel)]="selectedFloor" (change)="onChangeFloor($event)">
+                    [(ngModel)]="selectedFloor" (change)="onChangeFloor($event)" name="ddlFloor">
                     <option selected>Select Floor</option>
                     <option *ngFor="let floor of floors" value="{{floor.id}}"> {{floor.floorName}}
                     </option>
@@ -31,7 +31,7 @@
                 <div class="mb-3 ">
                     <label for="exampleInputEmail1" class="form-label" style="color: white;">Manager</label>
                     <select class="form-select form-select-sm" aria-label=".form-select-sm example"
-                        (change)="onChangeEmployee($event)">
+                        (change)="onChangeEmployee($event)" [(ngModel)]="selectedEmployee" name="ddlEmployee">
                         <option selected>Select Manager</option>
                         <option value="1">Anthony</option>
                         <option value="2">Stark</option>
@@ -43,7 +43,8 @@
             <div class="col-6">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label" style="color: white;">Department</label>
-                    <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example"
+                        name="ddlDepartment">
                         <option selected>Select Department</option>
                         <option value="AAA">AAA</option>
                         <option value="BBB">BBB</option>
@@ -54,20 +55,26 @@
         </div>
 
         <div class="row" style="background-color: rgb(95, 94, 94); border-bottom-right-radius: 1em ;">
-            <div class="col-6">
+            <!-- <div class="col-6">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label" style="color: white;">Zone</label>
-                    <select class="form-select form-select-sm" aria-label=".form-select-sm example"  [(ngModel)]="selectedZone">
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example"
+                        [(ngModel)]="selectedZone" (change)="onChangeZone($event)" name="ddlZone">
                         <option selected>Select zone</option>
                         <option *ngFor="let zone of zones" value="{{zone.id}}"> {{zone.zoneName}}
                     </select>
                 </div>
+            </div> -->
+            <div class="col-6">
+                <label for="exampleInputDate" class="form-label" style="color: white;">From Date</label>
+                <div class="input-group mb-3">
+                    <input type="date" class="form-control form-control-sm" [(ngModel)]="startDate"
+                        placeholder="From Date" aria-label="From">
+                </div>
             </div>
             <div class="col-6">
-                <label for="exampleInputEmail1" class="form-label" style="color: white;">Dates</label>
+                <label for="exampleInputDate" class="form-label" style="color: white;">To Date</label>
                 <div class="input-group mb-3">
-                    <input type="date" class="form-control form-control-sm" [(ngModel)]="startDate" placeholder="From Date" aria-label="From">
-                    <span class="input-group-text">To</span>
                     <input type="date" class="form-control" placeholder="To Date" [(ngModel)]="toDate" aria-label="To">
                 </div>
             </div>
@@ -84,8 +91,11 @@
     <br> <br>
     <div class="text-center">
         <div class="row">
-            <div class="col-4"> <button type="submit" class="btn btn-secondary" (click)="allocateSeatsToManager()">Allocate Seats</button></div>
-            <div class="col-4"><button type="submit" class="btn btn-secondary">Submit</button> </div>
+            <div class="col-4"> <button type="submit" class="btn btn-secondary"
+                    (click)="allocateSeatsToManager()">Allocate Seats</button></div>
+            <div class="col-4"><button type="submit" class="btn btn-secondary" [disabled]="!isSave"
+                    (click)="save()">Submit</button>
+            </div>
         </div>
 
     </div>

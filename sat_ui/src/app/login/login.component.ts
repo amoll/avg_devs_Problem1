@@ -1,8 +1,8 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../service/authentication.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -10,78 +10,72 @@ import { AuthenticationService } from '../service/authentication.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  // loginForm: FormGroup;
-  // loading = false;
-  // submitted = false;
-  returnUrl: string="";
-  userName: string="";
-  pwd:string="";
+
+  returnUrl: string = "";
+  userName: string = "";
+  pwd: string = "";
+  login: Array<any> = [
+    {
+      "id": 1,
+      "username": "Anthony",
+      "password": "12345",
+      "role": "Manager"
+    },
+    {
+      "id": 2,
+      "username": "Tony",
+      "password": "12345",
+      "role": "Admin"
+    },
+    {
+      "id": 3,
+      "username": "Ben",
+      "password": "12345",
+      "role": "Viewer"
+    },
+    {
+      "id": 4,
+      "username": "Sebastian",
+      "password": "12345",
+      "role": "Viewer"
+    }
+  ]
+
 
   constructor(
-      private formBuilder: FormBuilder,
-      private route: ActivatedRoute,
-      private router: Router,
-      private authenticationService: AuthenticationService
-      //private alertService: AlertService
-  ) {
-      // redirect to home if already logged in
-      // if (this.authenticationService.currentUserValue) {
-      //     this.router.navigate(['/']);
-      // }
-  }
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private http: HttpClient
+  ) { }
 
   ngOnInit() {
-      // this.loginForm = this.formBuilder.group({
-      //     username: ['', Validators.required],
-      //     password: ['', Validators.required]
-      // });
 
-      // get return url from route parameters or default to '/'
-      this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
-
-  // convenience getter for easy access to form fields
-  //get f() { return this.loginForm.controls; }
 
   onSubmit() {
-    
-    //  console.log(this.userName +" "+ this.pwd)
-    //   this.authenticationService.login(this.userName, this.pwd)
-    //       .subscribe(
-    //           data => {
-    //             if(data.role=="Viewer")
-    //             {
-    //                 this.router.navigate(['/booking', { id: data.empId }]);
-    //             }
-    //             else{
-    //                 this.router.navigate(['/dashboard',{ id: data.empId }]);
-    //             }
-                 
-    //           },
-    //           error => {
-    //               //this.alertService.error(error);
-    //              // this.loading = false;
-    //           });
+    const user = this.login.find((a: any) => {
+      return a.username === this.userName && a.password === this.pwd
+    })
+    if (user) {
+      // alert("Login Success");
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      localStorage.setItem('id', JSON.stringify(user.id));
+      if (user.role == "Viewer") {
+        this.router.navigate(['/booking/', user.id]);
+      }
+      else {
+        this.router.navigate(['/dashboard/', user.id]);
+      }
 
-              this.authenticationService.login(this.userName, this.pwd)
-              .subscribe(
-                data => {
-                    debugger;
-                    console.log(data)
-                  if(data.role=="Viewer")
-                  {
-                      this.router.navigate(['/booking', { id: data.id }]);
-                  }
-                  else{
-                      this.router.navigate(['/dashboard',{ id: data.id }]);
-                  }
-                   
-                },
-                error => {
-                  //   this.alertService.error(error);
-                  //  // this.loading = false;
-                });
+    } else {
+      alert("Username or Password incorrect");
+    }
+
+
   }
 
-  
+
 }

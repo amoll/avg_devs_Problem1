@@ -11,8 +11,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'booking/:id', component: BookSeatComponent },
   { path: 'dashboard/:id', component: DashboardComponent },
-  { path: 'allocation', component: AllocationComponent }
- 
+  { path: 'allocation/:id', component: AllocationComponent }
+
 ];
 
 @NgModule({
